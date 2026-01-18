@@ -1,17 +1,21 @@
 // DOMS ELEMENTS  ---------------------------------------------------------
-const dom_quiz = document.querySelector("#quiz");
-const dom_question = document.querySelector("#question");
-const dom_choiceA = document.querySelector("#A");
-const dom_choiceB = document.querySelector("#B");
-const dom_choiceC = document.querySelector("#C");
-const dom_choiceD = document.querySelector("#D");
-const dom_score = document.querySelector("#scoreContainer");
-const dom_start = document.querySelector("#start");
+const dom_addButton = document.querySelector("#addQuestion");
+const dom_questionsList = document.querySelector("#questionsList");
+const dom_dialog = document.querySelector("#questionDialog");
+const dom_dialogTitle = document.querySelector("#dialogTitle");
+const dom_questionForm = document.querySelector("#questionForm");
+const dom_cancelButton = document.querySelector("#cancelButton");
 
-dom_start.addEventListener("click", onStart);
+// Form fields
+const dom_questionTitle = document.querySelector("#questionTitle");
+const dom_choiceA = document.querySelector("#choiceA");
+const dom_choiceB = document.querySelector("#choiceB");
+const dom_choiceC = document.querySelector("#choiceC");
+const dom_choiceD = document.querySelector("#choiceD");
+const dom_correctAnswer = document.querySelector("#correctAnswer");
 
 // DATA  ---------------------------------------------------------
-let questions = [
+const DEFAULT_QUESTIONS = [
   {
     title: "What does HTML stand for?",
     choiceA: "Hi Thierry More Laught",
@@ -37,82 +41,109 @@ let questions = [
     correct: "C",
   },
 ];
-let runningQuestionIndex = 0;
-let score = 0;
+
+// Load questions from localStorage or use default
+let questions = JSON.parse(localStorage.getItem('quizQuestions')) || DEFAULT_QUESTIONS;
+
+let editingIndex = -1; // -1 means adding new, otherwise editing existing
 
 // FUNCTIONS ---------------------------------------------------------
 
-// Hide a given element
-function hide(element) {
-  // TODO
-  element.style.display = "none";
+// Display all questions in the list
+function renderQuestions() {
+  dom_questionsList.innerHTML = '';
+  
+  questions.forEach((question, index) => {
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question-item';
+    
+    questionDiv.innerHTML = `
+      <h3>${question.title}</h3>
+      <p><strong>A:</strong> ${question.choiceA}</p>
+      <p><strong>B:</strong> ${question.choiceB}</p>
+      <p><strong>C:</strong> ${question.choiceC}</p>
+      <p><strong>D:</strong> ${question.choiceD}</p>
+      <p><strong>Correct:</strong> ${question.correct}</p>
+      <div class="question-buttons">
+        <button onclick="editQuestion(${index})" class="edit-btn">Edit</button>
+        <button onclick="deleteQuestion(${index})" class="delete-btn">Delete</button>
+      </div>
+    `;
+    
+    dom_questionsList.appendChild(questionDiv);
+  });
 }
 
-function show(element) {
-  // TODO
-  element.style.display = "block";
+// Open dialog for adding new question
+function addQuestion() {
+  editingIndex = -1;
+  dom_dialogTitle.textContent = 'Add Question';
+  dom_questionForm.reset();
+  dom_dialog.showModal();
 }
 
-function onStart() {
-  // Render the current question
-  // Display the quiz view,
-  // Hide the start view
-  hide(dom_start);
-  show(dom_quiz);
-  renderQuestion();
-
+// Open dialog for editing existing question
+function editQuestion(index) {
+  editingIndex = index;
+  dom_dialogTitle.textContent = 'Edit Question';
+  
+  const question = questions[index];
+  dom_questionTitle.value = question.title;
+  dom_choiceA.value = question.choiceA;
+  dom_choiceB.value = question.choiceB;
+  dom_choiceC.value = question.choiceC;
+  dom_choiceD.value = question.choiceD;
+  dom_correctAnswer.value = question.correct;
+  
+  dom_dialog.showModal();
 }
 
-function renderQuestion() {
-  // Render the current question on the quiz view
-  dom_question.textContent = questions[runningQuestionIndex].title;
-  dom_choiceA.textContent = questions[runningQuestionIndex].choiceA;
-  dom_choiceB.textContent = questions[runningQuestionIndex].choiceB;
-  dom_choiceC.textContent = questions[runningQuestionIndex].choiceC;
-  dom_choiceD.textContent = questions[runningQuestionIndex].choiceD;
-
-
-}
-
-function onPlayerSubmit(answer) {
-  // Update the score, display the next question or the score view
-  if (answer === questions[runningQuestionIndex].correct) {
-    score++;
+// Delete a question
+function deleteQuestion(index) {
+  if (confirm('Are you sure you want to delete this question?')) {
+    questions.splice(index, 1);
+    localStorage.setItem('quizQuestions', JSON.stringify(questions));
+    renderQuestions();
   }
+}
 
-  runningQuestionIndex++;
-
-  if (runningQuestionIndex < questions.length) {
-    renderQuestion();
+// Save question (add or edit)
+function saveQuestion(event) {
+  event.preventDefault();
+  
+  const questionData = {
+    title: dom_questionTitle.value,
+    choiceA: dom_choiceA.value,
+    choiceB: dom_choiceB.value,
+    choiceC: dom_choiceC.value,
+    choiceD: dom_choiceD.value,
+    correct: dom_correctAnswer.value,
+  };
+  
+  if (editingIndex === -1) {
+    // Adding new question
+    questions.push(questionData);
   } else {
-    hide(dom_quiz);
-    show(dom_score);
-    renderScore();
+    // Editing existing question
+    questions[editingIndex] = questionData;
   }
+  
+  // Save to localStorage
+  localStorage.setItem('quizQuestions', JSON.stringify(questions));
+  
+  dom_dialog.close();
+  renderQuestions();
 }
 
-function renderScore() {
-  // calculate the amount of question percent answered by the user
-  // choose the image based on the scorePerCent
-  const scorePercent = Math.round((100 * score) / questions.length);
-  if (scorePercent < 20) {
-    dom_score.innerHTML = '<img src="/img/20.png" />' + "<p>Score: " + scorePercent + "%</p>";
-  } else if (scorePercent >=20 && scorePercent <= 40) {
-    dom_score.innerHTML = '<img src="/img/40.png" />' + "<p>Score: " + scorePercent + "%</p>";
-  } else if (scorePercent >=40 && scorePercent <= 60) {
-    dom_score.innerHTML = '<img src="/img/60.png" />' + "<p>Score: " + scorePercent + "%</p>";
-  } else if (scorePercent >=60 && scorePercent < 80) {
-    dom_score.innerHTML = '<img src="/img/80.png" />' + "<p>Score: " + scorePercent + "%</p>";
-  }
-  else {
-    dom_score.innerHTML = '<img src="/img/100.png" />' + "<p>Score:" + scorePercent + "%</p>";
-  }
-
+// Cancel dialog
+function cancelDialog() {
+  dom_dialog.close();
 }
 
+// EVENT LISTENERS ---------------------------------------------------------
+dom_addButton.addEventListener("click", addQuestion);
+dom_questionForm.addEventListener("submit", saveQuestion);
+dom_cancelButton.addEventListener("click", cancelDialog);
 
-
-// FUNCTIONS ---------------------------------------------------------
-show(dom_start);
-hide(dom_quiz);
-hide(dom_score);
+// INIT ---------------------------------------------------------
+renderQuestions();

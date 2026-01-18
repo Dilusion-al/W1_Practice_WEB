@@ -49,6 +49,11 @@ header {
     font-weight: bold;
 }
 
+.header_nav ul li a.active {
+    color: blue;
+    border-bottom: 3px solid blue;
+}
+
 .header_nav ul li a:hover {
     color: blue;
 }

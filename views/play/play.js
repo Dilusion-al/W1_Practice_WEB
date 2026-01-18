@@ -11,7 +11,7 @@ const dom_start = document.querySelector("#start");
 dom_start.addEventListener("click", onStart);
 
 // DATA  ---------------------------------------------------------
-let questions = [
+const DEFAULT_QUESTIONS = [
   {
     title: "What does HTML stand for?",
     choiceA: "Hi Thierry More Laught",
@@ -37,10 +37,12 @@ let questions = [
     correct: "C",
   },
 ];
+
+// Load questions from localStorage or use default
+let questions = JSON.parse(localStorage.getItem('quizQuestions')) || DEFAULT_QUESTIONS;
 let runningQuestionIndex = 0;
 let score = 0;
 
-// FUNCTIONS ---------------------------------------------------------
 
 // Hide a given element
 function hide(element) {

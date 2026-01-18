@@ -2,14 +2,21 @@ body {
   padding: 0;
   margin: 0;
   display: flex;
+  flex-direction: column;
   width: 100vw;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
+  min-height: 100vh;
   background-color: rgb(187, 128, 255);
   font-size: 30px;
   font-family: calibri;
   box-sizing: border-box;
+}
+
+.quiz-main {
+  display: flex;
+  width: 100vw;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 }
 
 #start {
@@ -36,24 +43,29 @@ body {
 
 #choices {
   display: grid;
-  grid-template-columns: repeat(2, auto);
-  gap: 10px;
-  margin: 20px 0;
-  justify-content: center;
-  align-items: center;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  margin: 20px;
+  padding: 10px;
 }
 
 .choice {
-  display: inline-block;
-  width: 135px;
-  text-align: center;
-  border: 1px solid grey;
-  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  padding: 15px 20px;
+  background-color: #f5f5f5;
+  border: 2px solid #ddd;
+  border-radius: 10px;
   cursor: pointer;
-  padding: 5px;
+  font-size: 20px;
+  text-align: left;
+  transition: all 0.3s ease;
 }
 .choice:hover {
-  border: 1px solid rgb(15, 15, 15);
+  background-color: #e8e8ff;
+  border-color: rgb(187, 128, 255);
+  transform: translateX(5px);
 }
 
 #scoreContainer {
@@ -63,6 +75,153 @@ body {
   width: 50%;
   text-align: center;
   font-weight: bold;
+}
+
+/* Edit View Styles */
+#editContainer {
+  background-color: white;
+  border-radius: 20px;
+  padding: 30px;
+  width: 80%;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+#editContainer h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#addQuestion {
+  background-color: rgb(187, 128, 255);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+#addQuestion:hover {
+  background-color: rgb(157, 98, 225);
+}
+
+#questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.question-item {
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+}
+
+.question-item h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.question-item p {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+.question-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.question-item button {
+  background-color: rgb(187, 128, 255);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.question-item button:hover {
+  background-color: rgb(157, 98, 225);
+}
+
+.delete-btn {
+  background-color: #ff4444 !important;
+}
+
+.delete-btn:hover {
+  background-color: #cc0000 !important;
+}
+
+/* Dialog Styles */
+dialog {
+  border: none;
+  border-radius: 15px;
+  padding: 30px;
+  width: 500px;
+  max-width: 90%;
+}
+
+dialog h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+dialog label {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+dialog input, dialog select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.dialog-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.dialog-buttons button {
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.dialog-buttons button[type="submit"] {
+  background-color: rgb(187, 128, 255);
+  color: white;
+}
+
+.dialog-buttons button[type="submit"]:hover {
+  background-color: rgb(157, 98, 225);
+}
+
+.dialog-buttons button[type="button"] {
+  background-color: #ccc;
+  color: black;
+}
+
+.dialog-buttons button[type="button"]:hover {
+  background-color: #bbb;
 }
 
 
