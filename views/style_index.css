@@ -24,7 +24,7 @@ header {
 }
 
 .header_name {
-    font-size: 24px;
+    font-size: 1.2rem;
 }
 
 .header_nav {
@@ -45,9 +45,32 @@ header {
 .header_nav ul li a {
     text-decoration: none;
     color: black;
-    font-size: 18px;
+    font-size: 1.2rem;
     font-weight: bold;
 }
+
+.header_nav ul li a:hover {
+    color: blue;
+}
+
+main {
+    padding: 20px;
+}
+
+.main_content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 100px);
+}
+
+.background_image {
+    width: 70%;
+    height: 70%;
+    border-radius: 10px;
+}
+
+
 
 
 
