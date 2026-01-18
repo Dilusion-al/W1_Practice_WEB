@@ -2,24 +2,64 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Quiz</title>
+    <title>Edit Quiz</title>
+    <link rel="stylesheet" href="/views/style_index.css" />
     <link rel="stylesheet" href="/css/style.css" />
     <script defer src="edit.js"></script>
   </head>
   <body>
-    <div id="start">Start Quiz!</div>
-
-    <div id="quiz">
-      <div id="question">QQQQQQQQ</div>
-
-      <div id="choices">
-        <div class="choice" id="A" onclick="onPlayerSubmit('A')">AAAA</div>
-        <div class="choice" id="B" onclick="onPlayerSubmit('B')">BBBB</div>
-        <div class="choice" id="C" onclick="onPlayerSubmit('C')">CCCC</div>
-        <div class="choice" id="D" onclick="onPlayerSubmit('D')">DD</div>
+    <header class="header">
+      <div class="header_logo">
+        <img src="/img/logo.png" alt="Logo" height="40px" width="40px" >
+        <h1 class="header_name">Quiz App</h1>
       </div>
-
-    </div>
-    <div id="scoreContainer" ></div>
+      <nav class="header_nav">
+        <ul>
+          <li><a href="/views/play/play.html">Play Quiz</a></li>
+          <li><a href="/views/edit/edit.html" class="active">Edit Quiz</a></li>
+        </ul>
+      </nav>
+    </header>
+    
+    <main class="main_content">
+      <div id="editContainer">
+        <h2>Quiz Questions</h2>
+        <button id="addQuestion">Add Question</button>
+        <div id="questionsList"></div>
+      </div>
+      
+      <dialog id="questionDialog">
+        <h3 id="dialogTitle">Add Question</h3>
+        <form id="questionForm">
+          <label>Question:</label>
+          <input type="text" id="questionTitle" required />
+          
+          <label>Choice A:</label>
+          <input type="text" id="choiceA" required />
+          
+          <label>Choice B:</label>
+          <input type="text" id="choiceB" required />
+          
+          <label>Choice C:</label>
+          <input type="text" id="choiceC" required />
+          
+          <label>Choice D:</label>
+          <input type="text" id="choiceD" required />
+          
+          <label>Correct Answer:</label>
+          <select id="correctAnswer" required>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+          </select>
+          
+          <div class="dialog-buttons">
+            <button type="submit">Save</button>
+            <button type="button" id="cancelButton">Cancel</button>
+          </div>
+        </form>
+      </dialog>
+    </main>
   </body>
 </html>
